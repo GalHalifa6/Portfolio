@@ -59,7 +59,7 @@ src/
 │   │   └── [slug]/
 │   │       └── page.tsx       # Dynamic project detail pages
 │   ├── globals.css            # Global styles and CSS variables
-│   └── favicon.ico
+│   └── hello-world.ico
 ├── components/
 │   ├── NavBar.tsx             # Navigation with mobile menu
 │   └── ProjectCard.tsx        # Reusable project display component
