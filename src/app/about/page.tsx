@@ -79,23 +79,23 @@ export default function AboutPage() {
   <h3 className="text-lg font-semibold text-blue-400 mb-2">Why Hire Me?</h3>
   <ul className="list-disc pl-6 text-base text-[var(--text-secondary)] space-y-2">
     <li>
-      <span className="font-bold text-[var(--accent-primary)]">Hands-On Developer:</span> 
+      <span className="font-bold text-[var(--accent-primary)]">Hands-On Developer: </span> 
       Built diverse projects including a supermarket management system, e-commerce app, multi-threaded game simulators, and client-server applications.
     </li>
     <li>
-      <span className="font-bold text-[var(--accent-primary)]">Problem Solver:</span> 
+      <span className="font-bold text-[var(--accent-primary)]">Problem Solver: </span> 
       Strong ability to design scalable solutions, debug complex issues, and improve workflows through automation.
     </li>
     <li>
-      <span className="font-bold text-[var(--accent-primary)]">Team-Oriented:</span> 
+      <span className="font-bold text-[var(--accent-primary)]">Team-Oriented: </span> 
       Experience leading scheduling and operations tasks while collaborating on academic and personal software projects.
     </li>
     <li>
-      <span className="font-bold text-[var(--accent-primary)]">Technical Educator:</span> 
+      <span className="font-bold text-[var(--accent-primary)]">Technical Educator: </span> 
       Taught programming fundamentals and computer science to high school students, simplifying complex concepts with clarity.
     </li>
     <li>
-      <span className="font-bold text-[var(--accent-primary)]">Eager to Grow:</span> 
+      <span className="font-bold text-[var(--accent-primary)]">Eager to Grow: </span> 
       Motivated to contribute in a student or entry-level software engineering role, bringing energy, creativity, and a passion for building reliable systems.
     </li>
   </ul>
