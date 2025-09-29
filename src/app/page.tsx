@@ -26,7 +26,7 @@ export default function HomePage() {
             <p className="text-sm uppercase tracking-widest text-[var(--text-muted)]">Hello, I&apos;m</p>
             <h1 className="mt-2 text-4xl md:text-6xl font-bold gradient-text">Gal Halifa</h1>
             <p className="mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl">
-              Software Engineering graduate seeking entry-level opportunities. Proficient in Python & Java with a passion for problem-solving and building reliable solutions.
+              Software Engineering student seeking student or entry-level opportunities. Proficient in Python & Java, with strong problem-solving skills and a passion for building reliable and efficient solutions.
             </p>
           </div>
         </section>

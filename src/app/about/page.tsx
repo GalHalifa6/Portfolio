@@ -19,7 +19,9 @@ function ReadMoreSection() {
       {showMore && (
         <div className="text-[var(--text-secondary)] text-base leading-relaxed mb-4 bg-[var(--surface-hover)]/50 p-4 rounded border-l-2 border-[var(--accent-primary)]/30">
           <div className="flex justify-between items-start mb-3">
-            <span className="text-xs text-[var(--text-muted)] uppercase tracking-wide">Background Details</span>
+            <span className="text-xs text-[var(--text-muted)] uppercase tracking-wide">
+              Background Details
+            </span>
             <button
               className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors text-xs"
               onClick={() => setShowMore(false)}
@@ -28,16 +30,20 @@ function ReadMoreSection() {
             </button>
           </div>
           <p className="mb-3">
-            Over the past three years, I&apos;ve designed and delivered programming courses for high school students, collaborating with the Ministry of Education to launch new initiatives. My background also includes hands-on IT support and teaching computer science at the high school level, where I developed strong problem-solving and communication skills.
+            Motivated software engineering student at Ben-Gurion University with a GPA of 84, combining strong problem-solving skills and hands-on project experience. I have developed a variety of systems, including a Java-based supermarket management system with SQL integration, an e-commerce web application with Vaadin, Hibernate, and AWS deployment, a multi-threaded Set card game simulator, a Python client-server trivia game using TCP/UDP sockets, and a C# Kanban board application with a WPF interface and SQLite database.
+          </p>
+          <p className="mb-3">
+            My background also includes experience as a scheduling and operations supervisor, where I led automation initiatives, as well as prior teaching and mentoring roles in programming and computer science. These experiences strengthened my ability to break down complex concepts, collaborate effectively, and deliver solutions in dynamic environments.
           </p>
           <p>
-            These experiences have shaped my ability to adapt, learn quickly, and contribute effectively in dynamic environments. From troubleshooting complex technical issues to breaking down programming concepts for students, I&apos;ve honed my skills in clear communication and practical problem-solving.
+            I am eager to contribute in a student or entry-level software engineering position where I can apply my technical expertise, practical experience, and passion for building reliable and scalable systems.
           </p>
         </div>
       )}
     </>
   );
 }
+
 
 export default function AboutPage() {
   return (
@@ -70,15 +76,31 @@ export default function AboutPage() {
                 <ReadMoreSection />
 
                 <div className="mt-6">
-                  <h3 className="text-lg font-semibold text-blue-400 mb-2">Why Hire Me?</h3>
-                  <ul className="list-disc pl-6 text-base text-[var(--text-secondary)] space-y-2">
-                    <li><span className="font-bold text-[var(--accent-primary)]">Proven Problem Solver:</span> Years of help desk experience taught me to troubleshoot, adapt, and deliver under pressure.</li>
-                    <li><span className="font-bold text-[var(--accent-primary)]">Technical Educator:</span> I&apos;ve built and taught programming fundamentals for hundreds of students, mastering the art of clarity and simplicity.</li>
-                    <li><span className="font-bold text-[var(--accent-primary)]">Content Creator:</span> Developed curriculum and projects for national education programs, collaborating with the Ministry of Education.</li>
-                    <li><span className="font-bold text-[var(--accent-primary)]">Versatile Engineer:</span> From support to development, I bridge the gap between users and technology, making solutions practical and user-friendly.</li>
-                    <li><span className="font-bold text-[var(--accent-primary)]">Ready to Grow:</span> Eager to bring my skills, energy, and creativity to a forward-thinking team.</li>
-                  </ul>
-                </div>
+  <h3 className="text-lg font-semibold text-blue-400 mb-2">Why Hire Me?</h3>
+  <ul className="list-disc pl-6 text-base text-[var(--text-secondary)] space-y-2">
+    <li>
+      <span className="font-bold text-[var(--accent-primary)]">Hands-On Developer:</span> 
+      Built diverse projects including a supermarket management system, e-commerce app, multi-threaded game simulators, and client-server applications.
+    </li>
+    <li>
+      <span className="font-bold text-[var(--accent-primary)]">Problem Solver:</span> 
+      Strong ability to design scalable solutions, debug complex issues, and improve workflows through automation.
+    </li>
+    <li>
+      <span className="font-bold text-[var(--accent-primary)]">Team-Oriented:</span> 
+      Experience leading scheduling and operations tasks while collaborating on academic and personal software projects.
+    </li>
+    <li>
+      <span className="font-bold text-[var(--accent-primary)]">Technical Educator:</span> 
+      Taught programming fundamentals and computer science to high school students, simplifying complex concepts with clarity.
+    </li>
+    <li>
+      <span className="font-bold text-[var(--accent-primary)]">Eager to Grow:</span> 
+      Motivated to contribute in a student or entry-level software engineering role, bringing energy, creativity, and a passion for building reliable systems.
+    </li>
+  </ul>
+</div>
+
               </div>
             </div>
 
