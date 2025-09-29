@@ -30,7 +30,8 @@ export const projects: Project[] = [
     repo: 'https://github.com/GalHalifa6/Set-Game',
     year: '2022',
     image: '/images/set-game-preview.png',
-    video: '/videos/Set-Game-demo.mp4'
+    video: '/videos/Set-Game-demo.mp4',
+    featured: true
   },
   {
     id: 'TriviaKing',
@@ -38,7 +39,7 @@ export const projects: Project[] = [
     description: 'A multiplayer online trivia game where you prove your Pokémon knowledge against friends.',
     tech: ['Python'],
     repo: 'https://github.com/GalHalifa6/TriviaKing',
-    year: '2024',
+    year: '2023',
     image: '/images/TriviaKing-demo.png',
     video: '/videos/TriviaKing-demo.mp4',
     featured: true
@@ -49,7 +50,7 @@ export const projects: Project[] = [
     description: 'Automatic system for managing inventory, suppliers, and orders.',
     tech: ['Java'],
     repo: 'https://github.com/GalHalifa6/Super-Lee',
-    year: '2025',
+    year: '2023',
     image: '/images/Super-Lee-demo.png',
     video: '/videos/Super-Lee-demo.mp4',
     featured: true
@@ -62,7 +63,9 @@ export const projects: Project[] = [
     repo: 'https://github.com/GalHalifa6/Dungeons-and-Dragons',
     year: '2022',
     image: '/images/dnd-preview.png',
-    video: '/videos/dnd-demo.mp4'
+    video: '/videos/dnd-demo.mp4',
+    featured: true
+
   },
   {
     id: 'Kanban',
@@ -81,8 +84,8 @@ export const projects: Project[] = [
     tech: ['c++'],
     repo: 'https://github.com/GalHalifa6/World-Cup-subscription-service',
     image: '/images/World-Cup-demo.png',
-    year: '2024',
-    featured: true
+    year: '2022',
+    
   },
   {
     id: 'The-Coalition-Race',
@@ -99,10 +102,10 @@ export const projects: Project[] = [
     description: 'An automatic Piano Tiles solver detects falling tiles in real time and simulates instant clicks to achieve perfect speed and accuracy.',
     tech: ['Python'],
     repo: 'https://github.com/GalHalifa6/pianoTile-solver',
-    year: '2025',
     image: '/images/pianoTile-solver-demo.png',
     video: '/videos/pianoTile-solver-demo.mp4',
-    featured: true
+    year: '2024',
+    
   },
   {
     id: 'Heuristic_Search-Grid-Robot',
@@ -112,7 +115,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/GalHalifa6/Heuristic_Search-Grid-Robot',
     image: '/images/HeuristicSearch-demo.png',
     year: '2025',
-    featured: true
+    
   },
   {
     id: 'AlgoTrade-Tesla',
@@ -122,6 +125,6 @@ export const projects: Project[] = [
     repo: 'https://github.com/GalHalifa6/AlgoTrade-Tesla',
     image: '/images/algoTrade-demo.png',
     year: '2025',
-    featured: true
+    
   },
 ];

@@ -63,7 +63,7 @@ export default function AboutPage() {
               <div className="glass-card p-8 md:p-10 rounded-2xl shadow-xl border border-[var(--border)] bg-gradient-to-br from-purple-900/30 via-blue-900/20 to-teal-900/30">
                 <h2 className="text-2xl font-bold text-[var(--accent-primary)] mb-4 tracking-wide">Who I Am</h2>
                 <p className="text-[var(--text-primary)] text-lg leading-relaxed mb-4">
-                  Hi, I&apos;m Gal, a passionate Software Engineering graduate from Ben-Gurion University. My experience as a lead instructor and content developer in the Nitzanim program has honed my skills in building curriculum, teaching programming, and making complex concepts accessible. I&apos;m eager to take my next step in the software development industry, bringing my technical expertise, creativity, and drive to a forward-thinking team.
+                  Hi, I&apos;m Gal, a passionate Software Engineering student from Ben-Gurion University.
                 </p>
                 
                 {/* Read More Section */}
@@ -330,7 +330,7 @@ export default function AboutPage() {
               <div className="glass-card p-4">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-3">
-                    <h3 className="font-semibold text-[var(--text-primary)]">B.Sc. Software Engineering</h3>
+                    <h3 className="font-semibold text-[var(--text-primary)]">B.Sc. Software Engineering- student</h3>
                   </div>
                   <span className="text-xs text-[var(--text-muted)] bg-[var(--surface-hover)] px-2 py-1 rounded-full w-fit">
                     2021 - 2025
