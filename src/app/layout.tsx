@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: 'Projects, case studies, and contact.',
     type: 'website',
   },
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/hello-world.ico' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
