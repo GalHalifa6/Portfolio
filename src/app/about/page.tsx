@@ -128,12 +128,15 @@ export default function AboutPage() {
             </div>
             
             {/* Professional Journey */}
+            {false &&
+            <>
             <div className="mt-12">
               <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-6">Professional Journey</h2>
               <div className="relative">
                 {/* Timeline line */}
                 <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-[var(--border)]"></div>
-                
+
+
                 <div className="space-y-8">
                   {/* Current Position - Content Developer */}
                   <div className="relative flex items-start gap-6">
@@ -165,7 +168,8 @@ export default function AboutPage() {
                       </div>
                     </div>
                   </div>
-
+                  
+                      
                   {/* Python Instructor */}
                   <div className="relative flex items-start gap-6">
                     <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center flex-shrink-0 relative z-10 shadow-lg">
@@ -317,6 +321,8 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
+          </>}
+
 
             {/* Education */}
             <div className="mt-12">

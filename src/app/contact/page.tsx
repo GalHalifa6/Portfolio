@@ -32,7 +32,7 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <span className="text-base font-medium text-[var(--text-primary)]">Email</span>
-                  <span className="text-sm text-[var(--text-secondary)]">GalHalifa6@gmail.com</span>
+                  <span className="text-sm text-[var(--text-secondary)]">galhalifa@gmail.com</span>
                 </a>
                 {/* LinkedIn */}
                 <a href="https://www.linkedin.com/in/Gal Halifa" target="_blank" rel="noopener noreferrer" className="group flex flex-col items-center gap-3 hover:scale-110 transition-transform">
