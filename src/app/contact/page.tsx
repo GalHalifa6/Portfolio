@@ -25,7 +25,7 @@ export default function ContactPage() {
               </div>
               <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 mb-8">
                 {/* Email */}
-                <a href="mailto:GalHalifa6@gmail.com" className="group flex flex-col items-center gap-3 hover:scale-110 transition-transform">
+                <a href="mailto:galhalifa@gmail.com" className="group flex flex-col items-center gap-3 hover:scale-110 transition-transform">
                   <div className="bg-gradient-to-br from-blue-500 to-purple-500 rounded-full p-6 shadow-lg group-hover:shadow-[var(--accent-primary)]/40 animate-bounce">
                     <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
