@@ -17,7 +17,7 @@ export const projects: Project[] = [
     description: 'Full-stack e-commerce platform with comprehensive store management, user authentication, payment integration, and supplier systems. Features admin controls, shopping cart functionality, and detailed configuration system.',
     tech: ['JavaScript', 'Java', 'JSON', 'Web Development'],
     repo: 'https://github.com/GalHalifa6/Trading-System',
-    year: '2024',
+    year: '2025',
     image: '/images/trading-preview.png',
     video: '/videos/trading-demo.mp4',
     featured: true
