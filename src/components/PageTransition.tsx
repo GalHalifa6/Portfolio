@@ -11,7 +11,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
         duration: 0.8,
         ease: [0.25, 0.1, 0.25, 1],        // אנימציה רכה
       }}
-      className="w-full h-full"
+        className="w-full min-h-screen"
     >
       {children}
     </motion.div>
