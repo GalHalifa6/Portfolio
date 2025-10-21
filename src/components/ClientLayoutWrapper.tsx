@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MatrixMode from '@/components/MatrixMode';
 
@@ -18,6 +18,15 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
       setMatrixMode(false);
     }
   };
+
+  // ✅ מוסיפים כאן את ה־useEffect לסאונד
+  useEffect(() => {
+    if (matrixMode) {
+      const audio = new Audio('/sounds/matrix-enter.mp3');
+      audio.volume = 0.4;
+      audio.play();
+    }
+  }, [matrixMode]);
 
   return (
     <>
@@ -53,20 +62,34 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         )}
       </AnimatePresence>
 
-      {/* כפתור הפעלה */}
+      {/* כפתור מטריקס קטן */}
       <button
         onClick={handleToggle}
-        className={`fixed top-4 right-6 z-[9999] px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-500 shadow-lg ${
+        className={`fixed top-4 right-5 z-[9999] px-3 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-all duration-500 shadow-md ${
           matrixMode
-            ? 'bg-green-500/20 border border-green-400 text-green-300 hover:bg-green-500/40'
+            ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
             : 'bg-cyan-500/10 border border-cyan-400 text-cyan-300 hover:bg-cyan-500/30'
         }`}
       >
-        {matrixMode ? 'Exit Matrix Mode' : '🟩 Enter Matrix Mode'}
+        {matrixMode ? (
+          <>
+            <span className="animate-pulse text-green-400">☠</span>
+            Exit
+          </>
+        ) : (
+          <>
+            <span className="animate-pulse">🟩</span>
+            Matrix
+          </>
+        )}
       </button>
 
       {/* תוכן האתר */}
-      <div className={`relative z-10 transition-all duration-700 ${matrixMode ? 'text-green-400' : ''}`}>
+      <div
+        className={`relative z-10 transition-all duration-700 ${
+          matrixMode ? 'text-green-400' : ''
+        }`}
+      >
         {children}
       </div>
     </>

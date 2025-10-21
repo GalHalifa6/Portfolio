@@ -265,3 +265,62 @@ body { background: var(--bg); color: var(--text); }
 }
 
 
+/* אפקט glitch לטקסטים */
+.glitch {
+  position: relative;
+  color: #00ff9f;
+  text-shadow: 0 0 5px #00ff9f, 0 0 15px #00ff9f;
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 2px #00ff9f, -2px -2px #00ff9f;
+  }
+  20% {
+    text-shadow: -2px 1px #00ff9f, 2px -1px #00ff9f;
+  }
+  40% {
+    text-shadow: 2px -2px #00ff9f, -2px 2px #00ff9f;
+  }
+  60% {
+    text-shadow: 0 0 8px #00ff9f, 0 0 20px #00ff9f;
+  }
+  80% {
+    text-shadow: -2px 0 #00ff9f, 2px 0 #00ff9f;
+  }
+  100% {
+    text-shadow: 0 0 10px #00ff9f;
+  }
+}
+
+
+/* לינקים במצב מטריקס */
+.matrix-mode a {
+  color: #00ff9f;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.matrix-mode a:hover {
+  border-color: #00ff9f;
+  text-shadow: 0 0 8px #00ff9f, 0 0 20px #00ff9f;
+  filter: brightness(1.2);
+}
+
+/* כפתורים במצב מטריקס */
+.matrix-mode button {
+  background-color: rgba(0, 255, 159, 0.1);
+  border: 1px solid #00ff9f;
+  color: #00ff9f;
+  transition: all 0.3s ease;
+}
+
+.matrix-mode button:hover {
+  background-color: rgba(0, 255, 159, 0.2);
+  box-shadow: 0 0 12px #00ff9f;
+}
+
+
+
+
