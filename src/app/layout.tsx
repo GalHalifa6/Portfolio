@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import MatrixTransition from '@/components/MatrixTransition';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,14 +20,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased relative`}>
-        {/* Dynamic background */}
+        {/* אפקט מטריקס ברקע העליון */}
+        <MatrixTransition />
+
+        {/* רקע דינמי עם גרדיאנטים */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]"></div>
           <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] bg-fuchsia-500/20 blur-[120px] rounded-full animate-pulse-slow"></div>
           <div className="absolute bottom-[10%] right-[10%] w-[700px] h-[700px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
         </div>
 
-        {/* global content */}
+        {/* תוכן האתר */}
         <div className="relative z-10">{children}</div>
       </body>
     </html>
