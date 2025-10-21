@@ -1,11 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MatrixMode from '@/components/MatrixMode';
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [matrixMode, setMatrixMode] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null); // 🎧 כאן נשמור את הסאונד
 
   const handleToggle = () => {
     if (!matrixMode) {
@@ -15,16 +16,24 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         setTransitioning(false);
       }, 1500);
     } else {
+      // 🛑 כשנלחץ Exit — עוצרים את הסאונד
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0; // מאפסים לנקודת התחלה
+      }
       setMatrixMode(false);
     }
   };
 
-  // ✅ מוסיפים כאן את ה־useEffect לסאונד
+  // 🎶 מנגן מוזיקה כשנכנסים למטריקס
   useEffect(() => {
     if (matrixMode) {
       const audio = new Audio('/sounds/matrix-enter.mp3');
       audio.volume = 0.4;
+      audio.loop = true; // אם אתה רוצה שהמוזיקה תמשיך להתנגן ברקע
       audio.play();
+
+      audioRef.current = audio; // שומרים את האובייקט לזיכרון
     }
   }, [matrixMode]);
 
@@ -62,7 +71,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         )}
       </AnimatePresence>
 
-      {/* כפתור מטריקס קטן */}
+      {/* כפתור מטריקס */}
       <button
         onClick={handleToggle}
         className={`fixed top-4 right-5 z-[9999] px-3 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-all duration-500 shadow-md ${
