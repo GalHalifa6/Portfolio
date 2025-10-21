@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased relative`}>
-        {/* אפקט מטריקס ברקע העליון */}
+        {/* אפקט מטריקס רץ רק בזמן מעבר בין דפים */}
         <MatrixTransition />
 
         {/* רקע דינמי עם גרדיאנטים */}
