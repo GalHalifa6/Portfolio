@@ -33,7 +33,7 @@ export default function HomePage() {
               Gal Halifa
             </h1>
             <p className="mt-6 text-lg md:text-xl text-[var(--text-secondary)] max-w-3xl">
-              Software Engineering student at Ben-Gurion University, experienced in Java, Python,
+              Software Engineering student at Ben-Gurion University, experienced in Java, Python, C++, C, C#
               and SQL. Skilled in object-oriented programming, data management, and full-stack
               development. Passionate about building scalable systems and writing clean, efficient
               code.
