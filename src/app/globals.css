@@ -203,3 +203,37 @@ body { background: var(--bg); color: var(--text); }
 .navbar-aurora:hover::before {
   opacity: 1;
 }
+
+/* === Dynamic Gradient Animation === */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradientMove {
+  animation: gradientMove 15s ease infinite;
+}
+
+/* === Slow Pulsing Glow (for blobs) === */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
