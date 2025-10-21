@@ -1,9 +1,7 @@
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import PageTransition from '@/components/PageTransition'; // ← זה הקובץ שלך
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,8 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased relative overflow-hidden`}>
@@ -31,22 +27,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute bottom-[10%] right-[10%] w-[700px] h-[700px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
         </div>
 
-        {/* תוכן האתר עם אפקט נפילה */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname} // גורם לאנימציה לפעול בכל שינוי דף
-            initial={{ opacity: 0, y: -200 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 200 }}
-            transition={{
-              duration: 0.7,
-              ease: [0.25, 0.1, 0.25, 1],
-            }}
-            className="relative z-10"
-          >
-            {children}
-          </motion.div>
-        </AnimatePresence>
+        {/* עוטף את התוכן באפקט הנפילה */}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );
