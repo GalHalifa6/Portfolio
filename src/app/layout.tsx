@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]"></div>
           <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] bg-fuchsia-500/20 blur-[120px] rounded-full animate-pulse-slow"></div>
           <div className="absolute bottom-[10%] right-[10%] w-[700px] h-[700px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30 pointer-events-none"></div>
         </div>
 
         {/* עוטף את התוכן באפקט הנפילה */}
@@ -33,3 +34,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
