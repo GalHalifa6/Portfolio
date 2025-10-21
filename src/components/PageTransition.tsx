@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, easeOut } from 'framer-motion'; // 👈 נייבא את פונקציית easing הנכונה
 
 const lineVariants = {
   hidden: (i: number) => ({
@@ -12,7 +12,7 @@ const lineVariants = {
     transition: {
       delay: i * 0.05,
       duration: 0.6,
-      ease: 'easeOut', // ← שורה מתוקנת
+      ease: easeOut, // 👈 שימוש נכון בפונקציה ולא במחרוזת
     },
   }),
 };
@@ -22,7 +22,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
 
   return (
     <div className="w-full min-h-screen overflow-hidden relative">
-      {/* שכבות גשם */}
+      {/* שכבות הגשם */}
       {lines.map((_, i) => (
         <motion.div
           key={i}
@@ -35,14 +35,14 @@ export default function PageTransition({ children }: { children: React.ReactNode
         />
       ))}
 
-      {/* תוכן האתר נבנה אחרי הגשם */}
+      {/* תוכן האתר נבנה בהדרגה אחרי הגשם */}
       <motion.div
         initial={{ opacity: 0, y: -300 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
           duration: 1.2,
           delay: 0.8,
-          ease: 'easeOut', // ← גם פה מעודכן
+          ease: easeOut, // 👈 גם כאן מעודכן
         }}
         className="relative z-10"
       >
@@ -52,7 +52,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
           transition={{
             duration: 1,
             delay: 1.4,
-            ease: 'easeOut', // ← וגם כאן
+            ease: easeOut, // 👈 וגם כאן
           }}
         >
           {children}
