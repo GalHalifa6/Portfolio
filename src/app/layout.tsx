@@ -1,7 +1,10 @@
+'use client';
+
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import MatrixTransition from '@/components/MatrixTransition';
+import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,12 +20,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased relative`}>
-        {/* אפקט מטריקס רץ רק בזמן מעבר בין דפים */}
-        <MatrixTransition />
-
+      <body className={`${inter.className} antialiased relative overflow-hidden`}>
         {/* רקע דינמי עם גרדיאנטים */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]"></div>
@@ -30,8 +32,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute bottom-[10%] right-[10%] w-[700px] h-[700px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
         </div>
 
-        {/* תוכן האתר */}
-        <div className="relative z-10">{children}</div>
+        {/* תוכן האתר עם אפקט נפילה */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname} // גורם לאנימציה לפעול בכל שינוי דף
+            initial={{ opacity: 0, y: -200 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 200 }}
+            transition={{
+              duration: 0.7,
+              ease: [0.25, 0.1, 0.25, 1],
+            }}
+            className="relative z-10"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </body>
     </html>
   );
