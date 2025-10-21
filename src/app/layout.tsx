@@ -19,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
         </div>
 
+        {/* אפקט פתיחה קולנועי */}
         <IntroAnimation>{children}</IntroAnimation>
       </body>
     </html>

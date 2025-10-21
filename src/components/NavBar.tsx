@@ -8,7 +8,7 @@ export default function NavBar() {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,255,200,0.05)]">
+  <header className="relative z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,255,200,0.05)]">
       <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center justify-between">
         <Link
           href="/"
