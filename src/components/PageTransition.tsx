@@ -12,17 +12,17 @@ const lineVariants = {
     transition: {
       delay: i * 0.05,
       duration: 0.6,
-      ease: [0.16, 1, 0.3, 1],
+      ease: 'easeOut', // ← שורה מתוקנת
     },
   }),
 };
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
-  // מפרקים את הדף ל"שורות גשם"
   const lines = Array.from({ length: 12 });
 
   return (
     <div className="w-full min-h-screen overflow-hidden relative">
+      {/* שכבות גשם */}
       {lines.map((_, i) => (
         <motion.div
           key={i}
@@ -30,17 +30,33 @@ export default function PageTransition({ children }: { children: React.ReactNode
           variants={lineVariants}
           initial="hidden"
           animate="visible"
-          className="absolute w-full h-[8.5%] bg-gradient-to-b from-[#0f172a]/0 via-[#1e293b]/30 to-[#0f172a]/0 backdrop-blur-[2px]"
+          className="absolute w-full h-[8.5%] bg-gradient-to-b from-transparent via-[rgba(0,200,255,0.08)] to-transparent backdrop-blur-[2px]"
           style={{ top: `${i * 8.5}%` }}
         />
       ))}
+
+      {/* תוכן האתר נבנה אחרי הגשם */}
       <motion.div
         initial={{ opacity: 0, y: -300 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: [0.25, 1, 0.3, 1] }}
+        transition={{
+          duration: 1.2,
+          delay: 0.8,
+          ease: 'easeOut', // ← גם פה מעודכן
+        }}
         className="relative z-10"
       >
-        {children}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 1,
+            delay: 1.4,
+            ease: 'easeOut', // ← וגם כאן
+          }}
+        >
+          {children}
+        </motion.div>
       </motion.div>
     </div>
   );
