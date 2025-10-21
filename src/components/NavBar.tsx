@@ -1,14 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // מאזין לגלילה כדי לשנות את השקיפות והצל
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-  <header className="relative z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,255,200,0.05)]">
+    <header
+      className={`fixed top-0 left-0 w-full z-50 border-b transition-all duration-500 ${
+        scrolled
+          ? 'bg-black/70 border-cyan-400/20 backdrop-blur-xl shadow-[0_0_25px_rgba(0,255,255,0.1)]'
+          : 'bg-transparent border-transparent backdrop-blur-none'
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center justify-between">
         <Link
           href="/"
@@ -32,6 +46,7 @@ export default function NavBar() {
             </Link>
           ))}
 
+          {/* Resume Dropdown */}
           <div className="relative group">
             <button className="text-gray-300 hover:text-cyan-300 transition-colors focus:outline-none">
               Resume ▾
