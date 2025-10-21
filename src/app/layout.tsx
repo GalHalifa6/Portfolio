@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Gal Halifa — Software Engineer',
-  description: 'Projects, case studies, and contact.',
+  description: 'Portfolio & Projects',
   openGraph: {
     title: 'Gal Halifa — Software Engineer',
-    description: 'Projects, case studies, and contact.',
+    description: 'Portfolio & Projects',
     type: 'website',
   },
   icons: { icon: '/favicon.ico' },
@@ -19,16 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased relative`}>
-        {/* 🌈 Dynamic gradient background for the entire site */}
-        <div className="fixed inset-0 -z-10 animate-gradientMove bg-[length:400%_400%] bg-gradient-to-br from-indigo-700 via-purple-700 to-teal-600 opacity-30"></div>
-        
-        {/* ✨ Soft glowing blobs for depth */}
+        {/* Dynamic background */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-[-10%] left-[5%] w-[40vw] h-[40vw] bg-purple-500/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-          <div className="absolute bottom-[-10%] right-[5%] w-[35vw] h-[35vw] bg-teal-400/20 rounded-full blur-[100px] animate-pulse-slow delay-1000"></div>
+          <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]"></div>
+          <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] bg-fuchsia-500/20 blur-[120px] rounded-full animate-pulse-slow"></div>
+          <div className="absolute bottom-[10%] right-[10%] w-[700px] h-[700px] bg-cyan-500/20 blur-[150px] rounded-full animate-pulse-slow delay-1000"></div>
         </div>
 
-        {children}
+        {/* global content */}
+        <div className="relative z-10">{children}</div>
       </body>
     </html>
   );

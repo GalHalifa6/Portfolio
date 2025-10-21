@@ -8,22 +8,49 @@ export default function NavBar() {
   const [isResumeDropdownOpen, setIsResumeDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 navbar-aurora">
+    <header className="sticky top-0 z-50 bg-black/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(0,255,200,0.05)]">
       <div className="max-w-6xl mx-auto px-6 md:px-10 lg:px-16 h-16 flex items-center justify-between">
-        <Link href="/" className="font-semibold tracking-tight text-[var(--text-primary)] hover:text-[var(--accent-primary)] transition-colors">
-          Gal Halifa
+        <Link
+          href="/"
+          className="font-semibold tracking-tight text-white text-lg hover:text-cyan-300 transition-all"
+        >
+          <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+            Gal Halifa
+          </span>
         </Link>
-        
+
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-[var(--text-secondary)]">
-          <Link className="hover:text-[var(--accent-primary)] transition-colors" href="/projects">Projects</Link>
-          <Link className="hover:text-[var(--accent-primary)] transition-colors" href="/about">About</Link>
-          <Link className="hover:text-[var(--accent-primary)] transition-colors" href="/contact">Contact</Link>
+        <nav className="hidden md:flex items-center gap-8 text-sm">
+          {['Projects', 'About', 'Contact'].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase()}`}
+              className="text-gray-300 hover:text-cyan-300 transition-colors relative group"
+            >
+              {item}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:w-full transition-all duration-300"></span>
+            </Link>
+          ))}
+
           <div className="relative group">
-            <button className="hover:text-[var(--accent-primary)] transition-colors focus:outline-none">Resume ▾</button>
-            <div className="absolute left-0 mt-2 w-40 bg-[var(--surface)] border border-[var(--border)] rounded shadow-lg opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity z-50">
-              <a className="block px-4 py-2 hover:bg-[var(--surface-hover)] text-[var(--text-secondary)]" href="/resume.docx" download>Download DOCX</a>
-              <a className="block px-4 py-2 hover:bg-[var(--surface-hover)] text-[var(--text-secondary)]" href="/resume.pdf" download>Download PDF</a>
+            <button className="text-gray-300 hover:text-cyan-300 transition-colors focus:outline-none">
+              Resume ▾
+            </button>
+            <div className="absolute left-0 mt-2 w-44 bg-black/80 border border-cyan-400/20 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-md">
+              <a
+                href="/resume.pdf"
+                download
+                className="block px-4 py-2 text-gray-300 hover:bg-cyan-500/10 hover:text-cyan-300 transition-colors"
+              >
+                Download PDF
+              </a>
+              <a
+                href="/resume.docx"
+                download
+                className="block px-4 py-2 text-gray-300 hover:bg-cyan-500/10 hover:text-cyan-300 transition-colors"
+              >
+                Download DOCX
+              </a>
             </div>
           </div>
         </nav>
@@ -31,89 +58,67 @@ export default function NavBar() {
         {/* Mobile Menu Button */}
         <button
           className="md:hidden flex flex-col gap-1 p-2"
-          onClick={() => {
-            setIsMenuOpen(!isMenuOpen);
-            setIsResumeDropdownOpen(false); // Close resume dropdown when menu toggles
-          }}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <span className={`w-5 h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-          <span className={`w-5 h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`w-5 h-0.5 bg-[var(--text-primary)] transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+          <span
+            className={`w-6 h-0.5 bg-white transition-all ${
+              isMenuOpen ? 'rotate-45 translate-y-1.5' : ''
+            }`}
+          ></span>
+          <span
+            className={`w-6 h-0.5 bg-white transition-all ${
+              isMenuOpen ? 'opacity-0' : ''
+            }`}
+          ></span>
+          <span
+            className={`w-6 h-0.5 bg-white transition-all ${
+              isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
+            }`}
+          ></span>
         </button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 right-0 navbar-aurora border-t border-[var(--border)]">
-          <nav className="flex flex-col py-4 px-6 gap-4">
-            <Link 
-              className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors py-2"
-              href="/projects"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsResumeDropdownOpen(false);
-              }}
+        <nav className="md:hidden bg-black/80 border-t border-white/10 backdrop-blur-lg p-6 space-y-4">
+          {['Projects', 'About', 'Contact'].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase()}`}
+              onClick={() => setIsMenuOpen(false)}
+              className="block text-gray-300 hover:text-cyan-300 transition-colors text-lg"
             >
-              Projects
+              {item}
             </Link>
-            <Link 
-              className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors py-2"
-              href="/about"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsResumeDropdownOpen(false);
-              }}
+          ))}
+          <div>
+            <button
+              className="text-gray-300 hover:text-cyan-300 transition-colors text-lg flex items-center justify-between w-full"
+              onClick={() => setIsResumeDropdownOpen(!isResumeDropdownOpen)}
             >
-              About
-            </Link>
-            <Link 
-              className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors py-2"
-              href="/contact"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setIsResumeDropdownOpen(false);
-              }}
-            >
-              Contact
-            </Link>
-            <div className="relative">
-              <button
-                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors py-2 w-full text-left flex items-center justify-between"
-                onClick={() => setIsResumeDropdownOpen(!isResumeDropdownOpen)}
-              >
-                <span>Resume</span>
-                <span className={`transition-transform duration-200 ${isResumeDropdownOpen ? 'rotate-180' : ''}`}>▾</span>
-              </button>
-              {isResumeDropdownOpen && (
-                <div className="mt-2 ml-4 space-y-2">
-                  <a 
-                    className="block px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors rounded bg-[var(--surface-hover)]" 
-                    href="/resume.docx" 
-                    download 
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsResumeDropdownOpen(false);
-                    }}
-                  >
-                    Download DOCX
-                  </a>
-                  <a 
-                    className="block px-4 py-2 text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors rounded bg-[var(--surface-hover)]" 
-                    href="/resume.pdf" 
-                    download 
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsResumeDropdownOpen(false);
-                    }}
-                  >
-                    Download PDF
-                  </a>
-                </div>
-              )}
-            </div>
-          </nav>
-        </div>
+              Resume ▾
+            </button>
+            {isResumeDropdownOpen && (
+              <div className="mt-2 ml-4 space-y-2">
+                <a
+                  href="/resume.pdf"
+                  download
+                  className="block px-4 py-2 rounded-lg bg-cyan-500/10 text-gray-300 hover:text-cyan-300"
+                >
+                  Download PDF
+                </a>
+                <a
+                  href="/resume.docx"
+                  download
+                  className="block px-4 py-2 rounded-lg bg-cyan-500/10 text-gray-300 hover:text-cyan-300"
+                >
+                  Download DOCX
+                </a>
+              </div>
+            )}
+          </div>
+        </nav>
       )}
     </header>
   );
