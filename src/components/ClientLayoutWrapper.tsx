@@ -29,7 +29,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
       )}
 
       {/* אפקט מטריקס */}
-      <AnimatePresence>{matrixMode && <MatrixMode visible={matrixMode} />}</AnimatePresence>
+      <AnimatePresence>{matrixMode && <MatrixMode />}</AnimatePresence>
 
       {/* אפקט פתיחה קולנועי */}
       <AnimatePresence>
