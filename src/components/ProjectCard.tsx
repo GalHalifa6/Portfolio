@@ -52,19 +52,23 @@ export default function ProjectCard({ project }: { project: Project }) {
       <article
         className="
           relative overflow-hidden rounded-2xl 
-          bg-[#0b0c10]/80 backdrop-blur-xl 
-          border border-white/10 
+          bg-[#0b0c10]/95 backdrop-blur-xl 
+          border border-cyan-400/10 
           transition-all duration-500 group
-          hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,255,200,0.25)] 
-          hover:border-cyan-400/30 cursor-pointer
+          hover:scale-[1.02] hover:border-cyan-400/40 
+          hover:shadow-[0_0_25px_rgba(0,255,200,0.12)] 
+          cursor-pointer
         "
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Dynamic neon border flow */}
+        {/* Subtle animated glow ring */}
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-400 blur-lg animate-gradientFlow"></div>
+          <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-400 blur-md animate-gradientFlow opacity-25"></div>
         </div>
+
+        {/* Soft inner gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-500/5 to-blue-400/5 opacity-0 group-hover:opacity-50 transition-all duration-700"></div>
 
         {/* Media Section */}
         <div className="relative h-48 overflow-hidden rounded-t-2xl">
@@ -88,7 +92,7 @@ export default function ProjectCard({ project }: { project: Project }) {
               src={project.image}
               alt={`${project.title} preview`}
               fill
-              className={`object-cover transition-all duration-500 group-hover:scale-110 ${
+              className={`object-cover transition-all duration-500 group-hover:scale-105 ${
                 isVideoPlaying ? 'opacity-0' : 'opacity-100'
               }`}
             />
@@ -176,7 +180,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             {project.video && (
               <button
                 onClick={openVideoModal}
-                className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_15px_rgba(0,255,200,0.3)] hover:shadow-[0_0_25px_rgba(0,255,200,0.5)] flex items-center justify-center gap-2"
+                className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(0,255,200,0.2)] hover:shadow-[0_0_15px_rgba(0,255,200,0.3)] flex items-center justify-center gap-2"
               >
                 <svg
                   className="w-4 h-4"
@@ -197,7 +201,7 @@ export default function ProjectCard({ project }: { project: Project }) {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.833.09-.646.35-1.088.636-1.34-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.254-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 7.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.396.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.579.688.481C19.138 20.175 22 16.427 22 12.012 22 6.484 17.523 2 12 2z" />
+                <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.418 2.865 8.166 6.839 9.489..." />
               </svg>
               {project.video ? 'Code' : 'View Code'}
             </button>
@@ -212,10 +216,10 @@ export default function ProjectCard({ project }: { project: Project }) {
           onClick={closeVideoModal}
         >
           <div
-            className="relative max-w-4xl w-full bg-[#0d0d10] border border-cyan-400/20 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,255,200,0.3)] scale-100 animate-scaleIn"
+            className="relative max-w-4xl w-full bg-[#0d0d10] border border-cyan-400/20 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,255,200,0.2)] scale-100 animate-scaleIn"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/30 to-purple-800/30 border-b border-cyan-400/20">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/20 to-purple-800/20 border-b border-cyan-400/20">
               <h3 className="text-lg font-semibold text-cyan-200">
                 {project.title} — Demo
               </h3>
@@ -265,14 +269,14 @@ export default function ProjectCard({ project }: { project: Project }) {
                 href={project.repo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center gap-2 shadow-[0_0_20px_rgba(0,255,200,0.4)]"
+                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(0,255,200,0.3)]"
               >
                 <svg
                   className="w-4 h-4"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483..." />
+                  <path d="M12 2C6.477 2 2 6.484 2 12.012..." />
                 </svg>
                 View Code
               </a>
