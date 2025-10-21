@@ -1,23 +1,28 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import MatrixRain from './MatrixRain';
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
+  const [showRain, setShowRain] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowRain(false), 1800); // הגשם נגמר אחרי ~1.8 שניות
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -800, scale: 0.8, rotateX: 15 }}   // נופל ומוטה קדימה
-      animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}          // נוחת ומתיישר
-    exit={{ opacity: 0, y: 300, scale: 0.95, rotateX: -15 }}
-      transition={{
-        duration: 1.4,                 // זמן כולל לאנימציה
-        ease: [0.16, 1, 0.3, 1],       // תנועה חלקה מאוד (cubic-bezier)
-      }}
-      className="w-full min-h-screen origin-top"
-      style={{
-        transformStyle: 'preserve-3d',
-        perspective: 1200,
-      }}
-    >
-      {children}
-    </motion.div>
+    <>
+      <MatrixRain active={showRain} />
+
+      <motion.div
+        initial={{ opacity: 0, y: -200 }}
+        animate={{ opacity: showRain ? 0 : 1, y: showRain ? -200 : 0 }}
+        transition={{ duration: 1.2, ease: [0.25, 1, 0.3, 1] }}
+        className="w-full min-h-screen"
+      >
+        {children}
+      </motion.div>
+    </>
   );
 }
