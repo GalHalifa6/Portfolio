@@ -6,8 +6,8 @@ import MatrixMode from '@/components/MatrixMode';
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [matrixMode, setMatrixMode] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
-  const [isMuted, setIsMuted] = useState(false); // 🔇 מצב השתקה
-  const audioRef = useRef<HTMLAudioElement | null>(null); // 🎧 כאן נשמור את הסאונד
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleToggle = () => {
     if (!matrixMode) {
@@ -90,7 +90,8 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         onClick={handleToggle}
         className={`fixed z-[9999] px-3 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-all duration-500 shadow-md
           top-4 right-5 sm:top-4 sm:right-5
-          max-sm:bottom-6 max-sm:left-1/2 max-sm:-translate-x-1/2
+          max-sm:bottom-4 max-sm:right-4   /* 👈 במובייל למטה בצד ימין */
+          max-sm:px-2 max-sm:py-1 max-sm:text-[10px]
           ${
             matrixMode
               ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
@@ -110,13 +111,16 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         )}
       </button>
 
-      {/* כפתור השתקה — מופיע רק במטריקס */}
+      {/* כפתור השתקה — רק במטריקס */}
       {matrixMode && (
         <button
           onClick={handleMute}
-          className="fixed z-[9999] top-4 left-5 max-sm:bottom-16 max-sm:left-1/2 max-sm:-translate-x-1/2 px-3 py-2 rounded-md text-xs font-semibold transition-all duration-500 shadow-md bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20"
+          className="fixed z-[9999] top-4 left-5 sm:top-4 sm:left-5 
+            max-sm:bottom-4 max-sm:left-4   /* 👈 במובייל למטה בצד שמאל */
+            max-sm:px-2 max-sm:py-1 max-sm:text-[10px]
+            px-3 py-2 rounded-md text-xs font-semibold transition-all duration-500 shadow-md bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20"
         >
-          {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+          {isMuted ? '🔇' : '🔊'}
         </button>
       )}
 
