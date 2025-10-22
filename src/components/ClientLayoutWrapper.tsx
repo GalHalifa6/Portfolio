@@ -6,6 +6,7 @@ import MatrixMode from '@/components/MatrixMode';
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [matrixMode, setMatrixMode] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); // 🔇 מצב השתקה
   const audioRef = useRef<HTMLAudioElement | null>(null); // 🎧 כאן נשמור את הסאונד
 
   const handleToggle = () => {
@@ -19,7 +20,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
       // 🛑 כשנלחץ Exit — עוצרים את הסאונד
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current.currentTime = 0; // מאפסים לנקודת התחלה
+        audioRef.current.currentTime = 0;
       }
       setMatrixMode(false);
     }
@@ -30,12 +31,25 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     if (matrixMode) {
       const audio = new Audio('/sounds/matrix-enter.mp3');
       audio.volume = 0.4;
-      audio.loop = true; // אם אתה רוצה שהמוזיקה תמשיך להתנגן ברקע
+      audio.loop = true;
       audio.play();
-
-      audioRef.current = audio; // שומרים את האובייקט לזיכרון
+      audioRef.current = audio;
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
     }
   }, [matrixMode]);
+
+  // 🔇 כפתור השתקה
+  const handleMute = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.muted = !audio.muted;
+      setIsMuted(audio.muted);
+    }
+  };
 
   return (
     <>
@@ -74,11 +88,14 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
       {/* כפתור מטריקס */}
       <button
         onClick={handleToggle}
-        className={`fixed top-4 right-5 z-[9999] px-3 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-all duration-500 shadow-md ${
-          matrixMode
-            ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
-            : 'bg-cyan-500/10 border border-cyan-400 text-cyan-300 hover:bg-cyan-500/30'
-        }`}
+        className={`fixed z-[9999] px-3 py-2 rounded-md text-xs font-semibold flex items-center gap-2 transition-all duration-500 shadow-md
+          top-4 right-5 sm:top-4 sm:right-5
+          max-sm:bottom-6 max-sm:left-1/2 max-sm:-translate-x-1/2
+          ${
+            matrixMode
+              ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
+              : 'bg-cyan-500/10 border border-cyan-400 text-cyan-300 hover:bg-cyan-500/30'
+          }`}
       >
         {matrixMode ? (
           <>
@@ -87,11 +104,21 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
           </>
         ) : (
           <>
-            <span className="animate-pulse">{}</span>
+            <span className="animate-pulse">🟩</span>
             Matrix
           </>
         )}
       </button>
+
+      {/* כפתור השתקה — מופיע רק במטריקס */}
+      {matrixMode && (
+        <button
+          onClick={handleMute}
+          className="fixed z-[9999] top-4 left-5 max-sm:bottom-16 max-sm:left-1/2 max-sm:-translate-x-1/2 px-3 py-2 rounded-md text-xs font-semibold transition-all duration-500 shadow-md bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20"
+        >
+          {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+        </button>
+      )}
 
       {/* תוכן האתר */}
       <div
