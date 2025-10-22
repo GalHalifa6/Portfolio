@@ -87,7 +87,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
           </>
         ) : (
           <>
-            <span className="animate-pulse">🟩</span>
+            <span className="animate-pulse">{}</span>
             Matrix
           </>
         )}
