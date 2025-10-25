@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import IntroAnimation from '@/components/IntroAnimation'; // 👈 תוודא שהקובץ הזה קיים!
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({ subsets: ['latin'] });
 
