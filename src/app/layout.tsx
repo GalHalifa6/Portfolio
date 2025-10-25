@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import IntroAnimation from '@/components/IntroAnimation';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from '@vercel/analytics/react'; // ✅ שים לב: react במקום next
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,10 +17,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased relative`}>
-        {/* 👇 אפקט פתיחה (Hello World) */}
+        {/* אפקט פתיחה */}
         <IntroAnimation>
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
         </IntroAnimation>
+
+        {/* ✅ כאן מוסיפים את אנליטיקס */}
+        <Analytics />
       </body>
     </html>
   );
