@@ -2,19 +2,25 @@
 
 import type { Project } from '@/data/projects';
 import Image from 'next/image';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import Link from 'next/link';
+import { Play, X, Code2, ArrowUpRight, BookOpen } from 'lucide-react';
+import { GitHubIcon } from '@/components/BrandIcons';
+import { guides } from '@/data/guides';
 
 export default function ProjectCard({ project }: { project: Project }) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const modalVideoRef = useRef<HTMLVideoElement>(null);
+  const hasGuide = project.id in guides;
 
   const handleMouseEnter = () => {
-    if (project.video && videoRef.current && isVideoLoaded) {
-      setIsVideoPlaying(true);
-      videoRef.current.play();
+    const video = videoRef.current;
+    if (project.video && video) {
+      void video.play().then(() => {
+        if (!video.paused) setIsVideoPlaying(true);
+      }).catch(() => setIsVideoPlaying(false));
     }
   };
 
@@ -26,52 +32,41 @@ export default function ProjectCard({ project }: { project: Project }) {
     }
   };
 
-  const handleVideoLoad = () => setIsVideoLoaded(true);
-
-  const openVideoModal = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowVideoModal(true);
-  };
-
-  const closeVideoModal = () => {
-    setShowVideoModal(false);
-    if (modalVideoRef.current) {
-      modalVideoRef.current.pause();
-      modalVideoRef.current.currentTime = 0;
-    }
-  };
-
-  const handleGitHubClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    window.open(project.repo, '_blank', 'noopener,noreferrer');
-  };
+  // Close the demo modal with Escape
+  useEffect(() => {
+    if (!showVideoModal) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setShowVideoModal(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showVideoModal]);
 
   return (
     <>
       <article
-        className="
-          relative overflow-hidden rounded-2xl 
-          bg-[#0b0c10]/95 backdrop-blur-xl 
-          border border-cyan-400/10 
-          transition-all duration-500 group
-          hover:scale-[1.02] hover:border-cyan-400/40 
-          hover:shadow-[0_0_25px_rgba(0,255,200,0.12)] 
-          cursor-pointer
-        "
+        className="card card-interactive group h-full flex flex-col overflow-hidden hover:-translate-y-1"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Subtle animated glow ring */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="absolute -inset-[1px] rounded-2xl bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-400 blur-md animate-gradientFlow opacity-25"></div>
-        </div>
-
-        {/* Soft inner gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-500/5 to-blue-400/5 opacity-0 group-hover:opacity-50 transition-all duration-700"></div>
-
         {/* Media Section */}
-        <div className="relative h-48 overflow-hidden rounded-t-2xl">
+        <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-fg/[0.03]">
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={`${project.title} preview`}
+              fill
+              sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+              className={`object-cover transition-all duration-500 group-hover:scale-[1.03] ${
+                isVideoPlaying ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="icon-tile w-14 h-14 rounded-2xl">
+                <Code2 className="w-6 h-6" />
+              </span>
+            </div>
+          )}
+
           {project.video && (
             <video
               ref={videoRef}
@@ -82,171 +77,147 @@ export default function ProjectCard({ project }: { project: Project }) {
               muted
               loop
               playsInline
-              onLoadedData={handleVideoLoad}
               preload="metadata"
             />
           )}
 
-          {project.image ? (
-            <Image
-              src={project.image}
-              alt={`${project.title} preview`}
-              fill
-              className={`object-cover transition-all duration-500 group-hover:scale-105 ${
-                isVideoPlaying ? 'opacity-0' : 'opacity-100'
-              }`}
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-white opacity-80"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                  />
-                </svg>
-              </div>
-            </div>
-          )}
-
-          {/* Play Icon Overlay */}
-          {project.video && !isVideoPlaying && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-black/50 backdrop-blur-md rounded-full p-3 border border-cyan-400/30 group-hover:bg-black/70 transition-all duration-300">
-                <svg
-                  className="w-8 h-8 text-cyan-300"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-          )}
-
-          {/* Badges */}
-          {project.featured && (
-            <div className="absolute top-3 left-3 z-10">
-              <span className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white text-xs font-medium px-2 py-1 rounded-full shadow-md">
-                Featured
-              </span>
-            </div>
-          )}
           {project.year && (
-            <div className="absolute top-3 right-3 z-10">
-              <span className="bg-black/60 backdrop-blur-sm text-cyan-300 text-xs font-medium px-2 py-1 rounded-full border border-cyan-400/30">
-                {project.year}
-              </span>
-            </div>
+            <span className="absolute top-3 right-3 font-mono text-[11px] px-2 py-0.5 rounded-md bg-black/60 backdrop-blur text-white/80 border border-white/10">
+              {project.year}
+            </span>
           )}
         </div>
 
         {/* Content Section */}
-        <div className="p-5 relative z-10">
-          <h3 className="text-lg font-semibold leading-tight text-white group-hover:text-cyan-300 transition-colors mb-2">
-            {project.title}
-          </h3>
-          <p className="text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
-            {project.description}
-          </p>
+        <div className="p-5 flex flex-col flex-1">
+          <div className="flex items-start justify-between gap-3">
+            <h3 className="font-semibold leading-snug text-fg">{project.title}</h3>
+            {project.featured && <span className="tag shrink-0">Featured</span>}
+          </div>
+          <p className="mt-2 text-sm text-muted leading-relaxed line-clamp-3">{project.description}</p>
 
           {/* Tech Stack */}
-          <div className="flex flex-wrap gap-2 mb-5">
-            {project.tech.slice(0, 4).map((tech, i) => (
-              <span
-                key={tech}
-                className="text-xs rounded-full border border-cyan-400/20 bg-cyan-400/5 px-2 py-1 text-cyan-200 shadow-sm hover:border-cyan-400/40 transition-all"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.tech.slice(0, 4).map((tech) => (
+              <span key={tech} className="font-mono text-[11px] px-2 py-0.5 rounded-md border border-line bg-fg/[0.04] text-muted">
                 {tech}
               </span>
             ))}
             {project.tech.length > 4 && (
-              <span className="text-xs rounded-full border border-gray-600 bg-gray-800/40 px-2 py-1 text-gray-400 opacity-60">
+              <span className="font-mono text-[11px] px-2 py-0.5 rounded-md text-subtle">
                 +{project.tech.length - 4}
               </span>
             )}
           </div>
 
-          {/* Buttons */}
-          <div className="flex gap-3">
-            {project.video && (
-              <button
-                onClick={openVideoModal}
-                className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 shadow-[0_0_10px_rgba(0,255,200,0.2)] hover:shadow-[0_0_15px_rgba(0,255,200,0.3)] flex items-center justify-center gap-2"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+          {/* Live links */}
+          {(project.live || project.demo || hasGuide) && (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {hasGuide && (
+                <Link
+                  href={`/projects/${project.id}#guide`}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 font-mono text-[11px] text-accent hover:bg-accent/20 transition-colors"
                 >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+                  <BookOpen className="w-3 h-3" />
+                  Setup guide
+                  <ArrowUpRight className="w-3 h-3" />
+                </Link>
+              )}
+              {project.live && (
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-success/30 bg-success/10 px-2.5 py-1 font-mono text-[11px] text-success hover:bg-success/20 transition-colors"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-success" />
+                  Live site
+                  <ArrowUpRight className="w-3 h-3" />
+                </a>
+              )}
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Explore a fully populated demo — no university email needed"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-accent/30 bg-accent/10 px-2.5 py-1 font-mono text-[11px] text-accent hover:bg-accent/20 transition-colors"
+                >
+                  Try demo
+                  <ArrowUpRight className="w-3 h-3" />
+                </a>
+              )}
+              {project.demo && (
+                <span className="text-[11px] text-subtle">no university email needed</span>
+              )}
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="mt-auto pt-5 flex gap-2">
+            {project.video && (
+              <button onClick={() => setShowVideoModal(true)} className="btn btn-primary flex-1 py-2">
+                <Play className="w-3.5 h-3.5 fill-current" />
                 Watch Demo
               </button>
             )}
-            <button
-  onClick={handleGitHubClick}
-  className={`${project.video ? 'flex-1' : 'w-full'} bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 border border-cyan-400/20 hover:border-cyan-400/50`}
->
-  <svg
-    className="w-5 h-5"
-    fill="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path d="M12 2C6.477 2 2 6.484 2 12.012c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.833.09-.646.35-1.088.636-1.34-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.254-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0112 7.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.396.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .268.18.579.688.481C19.138 20.175 22 16.427 22 12.012 22 6.484 17.523 2 12 2z" />
-  </svg>
-  GitHub
-</button>
-
+            {project.repos ? (
+              project.repos.map((r) => (
+                <a
+                  key={r.url}
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${project.title} — ${r.label} repository on GitHub`}
+                  className="btn btn-ghost flex-1 px-2 py-2"
+                >
+                  <GitHubIcon className="w-4 h-4" />
+                  {r.label}
+                </a>
+              ))
+            ) : (
+              <a
+                href={project.repo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`btn btn-ghost py-2 ${project.video ? 'flex-1' : 'w-full'}`}
+              >
+                <GitHubIcon className="w-4 h-4" />
+                GitHub
+              </a>
+            )}
           </div>
         </div>
       </article>
 
-      {/* Modal */}
-      {showVideoModal && project.video && (
+      {/* Modal — portaled so card/section transforms can't trap the fixed overlay */}
+      {showVideoModal && project.video && createPortal(
         <div
-          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fadeIn"
-          onClick={closeVideoModal}
+          className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
+          onClick={() => setShowVideoModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${project.title} demo`}
         >
           <div
-            className="relative max-w-4xl w-full bg-[#0d0d10] border border-cyan-400/20 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(0,255,200,0.2)] scale-100 animate-scaleIn"
+            className="card relative max-w-4xl w-full overflow-hidden animate-scaleIn bg-bg"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-cyan-800/20 to-purple-800/20 border-b border-cyan-400/20">
-              <h3 className="text-lg font-semibold text-cyan-200">
-                {project.title} — Demo
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-line">
+              <h3 className="font-semibold text-fg">
+                {project.title} <span className="text-muted font-normal">— Demo</span>
               </h3>
               <button
-                onClick={closeVideoModal}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                onClick={() => setShowVideoModal(false)}
+                aria-label="Close demo"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-muted hover:text-fg hover:bg-fg/5 transition-colors"
               >
-                <svg
-                  className="w-6 h-6 text-cyan-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="relative bg-black">
+            <div className="bg-black">
               <video
-                ref={modalVideoRef}
                 src={project.video}
                 className="w-full h-auto max-h-[70vh] object-contain"
                 controls
@@ -255,13 +226,10 @@ export default function ProjectCard({ project }: { project: Project }) {
               />
             </div>
 
-            <div className="p-4 bg-[#0d0d10] border-t border-cyan-400/20 flex items-center justify-between">
-              <div className="flex flex-wrap gap-2">
+            <div className="px-5 py-4 border-t border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex flex-wrap gap-1.5">
                 {project.tech.slice(0, 6).map((tech) => (
-                  <span
-                    key={tech}
-                    className="text-xs rounded-full bg-cyan-400/10 px-2 py-1 text-cyan-200 border border-cyan-400/20"
-                  >
+                  <span key={tech} className="tag">
                     {tech}
                   </span>
                 ))}
@@ -270,20 +238,15 @@ export default function ProjectCard({ project }: { project: Project }) {
                 href={project.repo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-300 flex items-center gap-2 shadow-[0_0_15px_rgba(0,255,200,0.3)]"
+                className="btn btn-primary py-2 shrink-0"
               >
-                <svg
-                  className="w-4 h-4"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2C6.477 2 2 6.484 2 12.012..." />
-                </svg>
+                <GitHubIcon className="w-4 h-4" />
                 View Code
               </a>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

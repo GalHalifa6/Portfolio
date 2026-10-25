@@ -1,61 +1,56 @@
 // IntroAnimation.tsx
 'use client';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { profile } from '@/data/profile';
+
+const INTRO_MS = 1400;
 
 export default function IntroAnimation({ children }: { children: React.ReactNode }) {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 3000);
+    const timer = setTimeout(() => setShowIntro(false), INTRO_MS);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {showIntro && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 0 }}
-          transition={{ duration: 0.8, delay: 2.2, ease: 'easeOut' }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a]"
-        >
-          {/* 👇 פה מחליפים את ה-h1 */}
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{
-              opacity: [0, 1, 1, 0],
-              scale: [0.8, 1, 1.05, 1],
-            }}
-            transition={{
-              duration: 2.5,
-              times: [0, 0.3, 0.8, 1],
-              ease: 'easeInOut',
-            }}
-            className="text-6xl md:text-8xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(56,189,248,0.5)]"
+    <>
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-6 bg-bg"
           >
-            Welcome
-          </motion.h1>
-        </motion.div>
-      )}
-
-      {/* אפקט וילון */}
-      <motion.div
-        initial={{ scaleY: 1 }}
-        animate={{ scaleY: 0 }}
-        transition={{ duration: 1.1, delay: 2.0, ease: [0.77, 0, 0.175, 1] }}
-        className="fixed top-0 left-0 w-full h-full origin-top bg-gradient-to-br from-[#0f172a] via-[#1e293b] to-[#0f172a] z-[999]"
-      />
+            <motion.span
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="w-14 h-14 rounded-2xl border border-line-strong bg-fg/5 flex items-center justify-center font-mono text-lg font-bold text-fg"
+            >
+              {profile.initials}
+            </motion.span>
+            <div className="w-36 h-px bg-line overflow-hidden">
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: INTRO_MS / 1000 - 0.2, ease: 'easeInOut' }}
+                className="h-full origin-left bg-accent-strong"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* תוכן האתר */}
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, delay: 2.4, ease: 'easeOut' }}
-        className="relative z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showIntro ? 0 : 1 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         {children}
       </motion.div>
-    </div>
+    </>
   );
 }

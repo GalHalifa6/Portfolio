@@ -4,6 +4,10 @@ export type Project = {
   description: string;
   tech: string[];
   repo: string;
+  // For projects split across several repositories; replaces the single GitHub button.
+  repos?: { label: string; url: string }[];
+  live?: string;
+  demo?: string;
   year?: string;
   image?: string;
   video?: string;
@@ -12,10 +16,38 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: 'bubble-up',
+    title: 'Bubble.up',
+    description: 'Collaborative student platform launched to 150 beta users and validated at 50 concurrent users. Intelligent group-gap matching (quiz data, behavioral signals, confidence weighting, cold-start trending), real-time chat, file sharing, calendars, video, and group workspaces. Modular Spring Boot/PostgreSQL/WebSockets backend with a multilingual React UI (i18n/RTL), deployed to AWS EC2 via GitHub Actions CI/CD.',
+    tech: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'TypeScript', 'WebSockets', 'Docker', 'GitHub Actions', 'AWS EC2'],
+    repo: 'https://github.com/GalHalifa6/bubble-up',
+    live: 'https://bubbleup.online/dashboard',
+    demo: 'https://demo.bubbleup.online/',
+    year: '2026',
+    image: '/images/bubbleup-preview.png',
+    video: '/videos/bubbleup-demo.mp4',
+    featured: true
+  },
+  {
+    id: 'Distributed-Text-Processing',
+    title: 'Distributed Text Processing System',
+    description: 'Distributed text analysis system with a manager–worker architecture: parallel processing on EC2, asynchronous messaging through SQS, and S3 storage. Integrates Stanford NLP for linguistic analysis and aggregates results into HTML reports.',
+    tech: ['Java', 'AWS EC2', 'AWS SQS', 'AWS S3', 'Stanford NLP'],
+    repo: 'https://github.com/GalHalifa6/AWS_Project',
+    repos: [
+      { label: 'App', url: 'https://github.com/GalHalifa6/AWS_Project' },
+      { label: 'Manager', url: 'https://github.com/GalHalifa6/AWS_manager' },
+      { label: 'Worker', url: 'https://github.com/GalHalifa6/AWS_worker' },
+    ],
+    year: '2025',
+    image: '/images/text-processing-preview.svg',
+    featured: true
+  },
+  {
     id: 'Trading-System',
-    title: 'E-Commerce Trading System',
-    description: 'Full-stack e-commerce platform with comprehensive store management, user authentication, payment integration, and supplier systems. Features admin controls, shopping cart functionality, and detailed configuration system.',
-    tech: ['JavaScript', 'Java', 'JSON', 'Web Development'],
+    title: 'E-Commerce Marketplace',
+    description: 'Full-stack, Amazon-like marketplace with multi-store management, role-based access control, inventory tracking, order processing, and complex discount and purchase policies. Persistence with Hibernate/JPA, integrated external payment and supply services, deployed on AWS.',
+    tech: ['Java', 'Vaadin', 'Hibernate', 'JPA', 'AWS'],
     repo: 'https://github.com/GalHalifa6/Trading-System',
     year: '2025',
     image: '/images/trading-preview.png',
@@ -63,9 +95,7 @@ export const projects: Project[] = [
     repo: 'https://github.com/GalHalifa6/Dungeons-and-Dragons',
     year: '2022',
     image: '/images/dnd-preview.png',
-    video: '/videos/dnd-demo.mp4',
-    featured: true
-
+    video: '/videos/dnd-demo.mp4'
   },
   {
     id: 'Kanban',

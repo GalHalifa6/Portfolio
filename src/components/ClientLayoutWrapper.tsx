@@ -1,7 +1,50 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig, useScroll, useSpring } from 'framer-motion';
+import { ArrowUp } from 'lucide-react';
 import MatrixMode from '@/components/MatrixMode';
+import { MatrixContext } from '@/components/MatrixContext';
+import NavBar from '@/components/NavBar';
+import Footer from '@/components/Footer';
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 });
+  return (
+    <motion.div
+      style={{ scaleX }}
+      className="fixed top-0 left-0 right-0 h-0.5 origin-left bg-accent-strong z-[60]"
+    />
+  );
+}
+
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 600);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 12 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Back to top"
+          className="fixed bottom-5 right-5 z-40 w-11 h-11 rounded-xl border border-line bg-card/90 backdrop-blur text-fg flex items-center justify-center hover:border-line-strong transition-colors"
+        >
+          <ArrowUp className="w-4 h-4" />
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+}
 
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [matrixMode, setMatrixMode] = useState(false);
@@ -9,40 +52,40 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const handleToggle = () => {
+  const toggleMatrix = () => {
+    if (transitioning) return;
     if (!matrixMode) {
       setTransitioning(true);
       setTimeout(() => {
+        setIsMuted(false);
         setMatrixMode(true);
         setTransitioning(false);
       }, 1200);
     } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
       setMatrixMode(false);
     }
   };
 
   // 🎶 ניגון מוזיקה במצב מטריקס
   useEffect(() => {
-    if (matrixMode) {
-      const audio = new Audio('/sounds/matrix-enter.mp3');
-      audio.volume = 0.4;
-      audio.loop = true;
-      audio.play();
-      audioRef.current = audio;
-    } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
-    }
+    document.documentElement.classList.toggle('matrix', matrixMode);
+    if (!matrixMode) return;
+
+    const audio = new Audio('/sounds/matrix-enter.mp3');
+    audio.volume = 0.4;
+    audio.loop = true;
+    audio.play().catch(() => {});
+    audioRef.current = audio;
+
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+      audioRef.current = null;
+    };
   }, [matrixMode]);
 
   // 🔇 השתקה
-  const handleMute = () => {
+  const toggleMute = () => {
     const audio = audioRef.current;
     if (audio) {
       audio.muted = !audio.muted;
@@ -51,107 +94,52 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   };
 
   return (
-    <>
-      {/* רקע רגיל */}
-      {!matrixMode && (
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 animate-gradientFlow bg-[length:200%_200%] bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a]" />
-        </div>
-      )}
+    <MatrixContext.Provider value={{ matrixMode, isMuted, toggleMatrix, toggleMute }}>
+      <MotionConfig reducedMotion="user">
+        {/* רקע רגיל */}
+        {!matrixMode && (
+          <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+            <div className="absolute inset-0 dot-grid" />
+            <div className="absolute left-1/2 -top-48 h-[640px] w-[min(1000px,140vw)] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--glow),transparent)]" />
+          </div>
+        )}
 
-      {/* מצב מטריקס */}
-      <AnimatePresence>{matrixMode && <MatrixMode />}</AnimatePresence>
+        {/* מצב מטריקס */}
+        <AnimatePresence>{matrixMode && <MatrixMode />}</AnimatePresence>
 
-      {/* אנימציית מעבר */}
-      <AnimatePresence>
-        {transitioning && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
-          >
-            <motion.h1
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="text-4xl md:text-6xl font-bold text-green-400 tracking-widest"
+        {/* אנימציית מעבר */}
+        <AnimatePresence>
+          {transitioning && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black px-6"
             >
-              Initializing Matrix Mode...
-            </motion.h1>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="font-mono text-lg md:text-2xl text-[#00ff9f] tracking-wide"
+              >
+                &gt; initializing matrix mode<span className="animate-blink">_</span>
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* 🎛️ כפתורי שליטה במובייל */}
-      <div
-        className="fixed top-[14px] left-[120px] flex gap-2 items-center md:hidden z-[9999]"
-      >
-        {/* כפתור מטריקס קטן */}
-        <button
-          onClick={handleToggle}
-          className={`w-7 h-7 flex items-center justify-center rounded-md text-[10px] font-semibold transition-all duration-300 shadow-md
-            ${
-              matrixMode
-                ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
-                : 'bg-cyan-500/10 border border-cyan-400 text-cyan-300 hover:bg-cyan-500/30'
-            }`}
-        >
-          {matrixMode ? '☠' : '🟩'}
-        </button>
+        <ScrollProgress />
 
-        {/* כפתור השתקה קטן */}
-        {matrixMode && (
-          <button
-            onClick={handleMute}
-            className="w-7 h-7 flex items-center justify-center rounded-md text-[10px] font-semibold bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20"
-          >
-            {isMuted ? '🔇' : '🔊'}
-          </button>
-        )}
-      </div>
+        {/* תוכן האתר */}
+        <div className="relative z-10 flex min-h-screen flex-col">
+          <NavBar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
 
-      {/* כפתורי דסקטופ */}
-      <button
-        onClick={handleToggle}
-        className={`hidden md:flex fixed top-4 right-5 z-[9999] px-3 py-2 rounded-md text-xs font-semibold items-center gap-2 transition-all duration-500 shadow-md
-          ${
-            matrixMode
-              ? 'bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20'
-              : 'bg-cyan-500/10 border border-cyan-400 text-cyan-300 hover:bg-cyan-500/30'
-          }`}
-      >
-        {matrixMode ? (
-          <>
-            <span className="animate-pulse text-green-400">☠</span>
-            Exit
-          </>
-        ) : (
-          <>
-            <span className="animate-pulse">🟩</span>
-            Matrix
-          </>
-        )}
-      </button>
-
-      {matrixMode && (
-        <button
-          onClick={handleMute}
-          className="hidden md:flex fixed top-4 left-5 z-[9999] px-3 py-2 rounded-md text-xs font-semibold transition-all duration-500 shadow-md bg-green-500/10 border border-green-400 text-green-300 hover:bg-green-500/20"
-        >
-          {isMuted ? '🔇 Unmute' : '🔊 Mute'}
-        </button>
-      )}
-
-      {/* תוכן האתר */}
-      <div
-        className={`relative z-10 transition-all duration-700 ${
-          matrixMode ? 'text-green-400' : ''
-        }`}
-      >
-        {children}
-      </div>
-    </>
+        <BackToTop />
+      </MotionConfig>
+    </MatrixContext.Provider>
   );
 }
